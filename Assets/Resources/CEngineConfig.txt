@@ -1,0 +1,6 @@
+﻿Key	Value	Comment
+ProductRelPath	../Product	
+AssetBundleRelPath	StreamingAssets	
+AssetBundleExt	.unity3d	base
+IsLoadAssetBundle	0	
+UIBridgeType	NGUI	
