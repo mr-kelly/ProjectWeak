@@ -83,7 +83,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1876355794}
   - 114: {fileID: 1876355793}
-  - 81: {fileID: 1876355795}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -114,10 +113,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!81 &1876355795
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1876355792}
-  m_Enabled: 1
