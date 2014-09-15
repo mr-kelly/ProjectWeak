@@ -23,13 +23,25 @@ class CAudioModule : MonoBehaviour
     {
         _Transform = transform;
         gameObject.AddComponent<AudioListener>();
+
+        CommonBgAudio();
+    }
+
+    void CommonBgAudio()
+    {
+
     }
 
     void Update()
     {
     }
 
-    public void PlayAudio(GameObject playObject, string path, bool loop = false)
+    /// <summary>
+    /// 播放音效
+    /// </summary>
+    /// <param name="path">音效路径</param>
+    /// <param name="loop">是否循环</param>
+    public void PlayAudio(string path, bool loop = false)
     {
         if (loop)
         {
@@ -41,19 +53,9 @@ class CAudioModule : MonoBehaviour
             _LoopAudios[path] = null;
         }
 
-        CAssetBundleLoader loader = new CAssetBundleLoader(path + "_Audio" + CCosmosEngine.GetConfig("AssetBundleExt"), (_sz, _ab, _args) =>
-        {
-            OnLoadAudioClip(_ab.mainAsset as AudioClip, new object[] { path, playObject, loop });
+        new CAudioLoader(path, (audioClip) => {
+            OnLoadAudioClip(audioClip, new object[] { path, loop });
         });
-    }
-    /// <summary>
-    /// 播放音效
-    /// </summary>
-    /// <param name="path">音效路径</param>
-    /// <param name="loop">是否循环</param>
-    public void PlayAudio(string path, bool loop = false)
-    {
-        PlayAudio(gameObject, path, loop);
     }
 
     public void StopPlay(string path)
@@ -68,12 +70,11 @@ class CAudioModule : MonoBehaviour
             CBase.LogWarning("Not found playing music : {0}", path);
     }
 
-    void OnLoadAudioClip(Object asset, params object[] args)
+    void OnLoadAudioClip(Object asset, object[] args)
     {
         string path = (string)args[0];
-        GameObject playObject = (GameObject)args[1];
-        bool loop = (bool)args[2];
-        AudioSource audioSource = playObject.AddComponent<AudioSource>();
+        bool loop = (bool)args[1];
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 
         audioSource.rolloffMode = AudioRolloffMode.Linear;
         audioSource.maxDistance = 40;
