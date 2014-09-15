@@ -155,6 +155,22 @@ public class CUIMathGame : CUIController
         }
     }
 
+    /// <summary>
+    /// 受傷，屏幕變紅
+    /// </summary>
+    void ScreenHurt()
+    {
+        // 生命條減少, 無數字
+    }
+
+    /// <summary>
+    /// 答對題目，出現的效果
+    /// </summary>
+    void ScreenRight()
+    {
+        // 數字+1 彈過去
+    }
+
     // TODO: no use
     static public List<T> ShufflePro<T>(ref List<T> list)
     {
