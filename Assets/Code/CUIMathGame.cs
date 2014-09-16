@@ -50,6 +50,13 @@ public class CUIMathGame : CUIController
         NewLevel();
         
     }
+
+    void ShowScoreEffect(int score)
+    {
+        GameObject scoreEff = GameObject.Instantiate(this.ScoreEffectTemplate.gameObject) as GameObject;
+        
+
+    }
     IEnumerator TimerCounter()
     {
         float time = 0;
