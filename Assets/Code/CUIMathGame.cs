@@ -10,6 +10,8 @@ public class CUIMathGame : CUIController
     public UIButton SelectBtn1;
     public UIButton SelectBtn2;
     public UIButton SelectBtn3;
+    public UILabel ScoreLabel;
+    public UILabel ScoreEffectTemplate; // 飛出特效
 
     public List<UIButton> SelectBtns;
     AudioSource TimeCounterSound;
@@ -20,6 +22,8 @@ public class CUIMathGame : CUIController
         base.OnInit();
         TimeCounterSound = GetControl<AudioSource>("TimeCounter");
         TimeCounterLabel = GetControl<UILabel>("TimeCounter");
+        ScoreLabel = GetControl<UILabel>("ScoreLabel");
+        ScoreEffectTemplate = GetControl<UILabel>("ScoreEffectTemplate");
 
         Bg = GetControl<UIColorQuad>("Bg");
 
