@@ -222,7 +222,7 @@ MonoBehaviour:
     relative: 1
     absolute: 0
   updateAnchors: 1
-  mColor: {r: 0, g: 0, b: 0, a: 1}
+  mColor: {r: .988235295, g: .200000003, b: .400000006, a: 1}
   mPivot: 4
   mWidth: 251
   mHeight: 43
@@ -506,7 +506,7 @@ MonoBehaviour:
     relative: 1
     absolute: 0
   updateAnchors: 1
-  mColor: {r: 0, g: 0, b: 0, a: 1}
+  mColor: {r: .286764681, g: .286764681, b: .286764681, a: 1}
   mPivot: 4
   mWidth: 251
   mHeight: 43
@@ -518,7 +518,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: "\u6700\u9AD8\u6210\u7EE9\n___________"
+  mText: "\u6700\u9AD8\u6210\u7EE9\n------------------"
   mFontSize: 20
   mFontStyle: 0
   mAlignment: 0
