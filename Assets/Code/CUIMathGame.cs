@@ -58,7 +58,13 @@ public class CUIMathGame : CUIController
         CTool.SetChild(scoreEff.transform, CNGUIBridge.Instance.UiRoot.transform);
         scoreEff.transform.position = startPos;
 
+        UILabel copyLabel = scoreEff.GetComponent<UILabel>();
+        CBase.Assert(copyLabel);
+        copyLabel.text = score.ToString();
+
+
     }
+
     IEnumerator TimerCounter()
     {
         float time = 0;
