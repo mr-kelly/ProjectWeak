@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using DG.Tweening;
 
 public class CUIMathGame : CUIController
 {
@@ -21,9 +21,9 @@ public class CUIMathGame : CUIController
     public override void OnInit()
     {
         base.OnInit();
-        TimeCounterSound = GetControl<AudioSource>("TimeCounter");
-        TimeCounterLabel = GetControl<UILabel>("TimeCounter");
-        ScoreLabel = GetControl<UILabel>("ScoreLabel");
+        TimeCounterSound = GetControl<AudioSource>("TopBar/Bg/TimeCounter");
+        TimeCounterLabel = GetControl<UILabel>("TopBar/Bg/TimeCounter");
+        ScoreLabel = GetControl<UILabel>("TopBar/Bg/ScoreLabel");
         ScoreEffectTemplate = GetControl<UILabel>("ScoreEffectTemplate");
 
         Bg = GetControl<UIColorQuad>("Bg");
@@ -93,7 +93,10 @@ public class CUIMathGame : CUIController
             CBase.Log("Right");
         }
         else
+        {
             CBase.Log("Wrong");
+            CNGUIBridge.Instance.UiCamera.gameObject.transform.DOShakePosition(.5f, 20f);
+        }
         AnswerQuestion();
     }
 
