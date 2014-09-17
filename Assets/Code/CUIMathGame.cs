@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class CUIMathGame : CUIController
 {
     public UIColorQuad Bg;
@@ -51,10 +52,11 @@ public class CUIMathGame : CUIController
         
     }
 
-    void ShowScoreEffect(int score)
+    void ShowScoreEffect(Vector3 startPos, int score)
     {
         GameObject scoreEff = GameObject.Instantiate(this.ScoreEffectTemplate.gameObject) as GameObject;
-        
+        CTool.SetChild(scoreEff.transform, CNGUIBridge.Instance.UiRoot.transform);
+        scoreEff.transform.position = startPos;
 
     }
     IEnumerator TimerCounter()
@@ -131,8 +133,8 @@ public class CUIMathGame : CUIController
             symbolStr = "-";
         }
 
-        string QuestionText = string.Format("{0} {1} {2} = ?", aNum, symbolStr, bNum);
-        QuestionLabel.text = QuestionText;
+        string questionText = string.Format("{0} {1} {2} = ?", aNum, symbolStr, bNum);
+        QuestionLabel.text = questionText;
         return rightAnswer;
     }
 
@@ -172,6 +174,7 @@ public class CUIMathGame : CUIController
     void ScreenHurt()
     {
         // 生命條減少, 無數字
+        CUIMidMsg.QuickMsg("Wrong!");
     }
 
     /// <summary>
@@ -180,6 +183,7 @@ public class CUIMathGame : CUIController
     void ScreenRight()
     {
         // 數字+1 彈過去
+        CUIMidMsg.QuickMsg("Right!");
     }
 
     // TODO: no use
