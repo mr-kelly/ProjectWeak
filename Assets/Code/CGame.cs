@@ -1,18 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Umeng;
 
 public class CGame : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake()
     {
+
+        GA.StartWithAppKeyAndChannelId("541d93effd98c518d0031a4d", "App");
+        
         CCosmosEngine.New(gameObject, new ICModule[] {
             
-        }, null, AfterInit);
+        }, null, AfterInitModules);
 	}
 	
 
-    IEnumerator AfterInit()
+    
+    IEnumerator AfterInitModules()
     {
         CUIManager.Instance.OpenWindow<CUIHome>();
         yield break;
