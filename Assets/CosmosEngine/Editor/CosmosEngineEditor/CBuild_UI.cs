@@ -73,10 +73,10 @@ public partial class CBuild_UI : AutoBuildBase
         {
             // 读取UIPanel的depth, 遍历所有UI控件，将其depth加上UIPanel Depth， 以此设置层级关系
             // 如PanelRoot Depth填10,  子控件填0,1,2   打包后，子控件层级为 10 << 5 | 1 = 320, 321, 322
-            foreach (UIWidget uiWidget in TempPanelObject.GetComponentsInChildren<UIWidget>(true))
-            {
-                uiWidget.depth = (PanelRoot.depth + 15) << 5 | (uiWidget.depth + 15);  // + 15是为了杜绝负数！不要填-15以上的
-            }
+            //foreach (UIWidget uiWidget in TempPanelObject.GetComponentsInChildren<UIWidget>(true))
+            //{
+            //    uiWidget.depth = (PanelRoot.depth + 15) << 5 | (uiWidget.depth + 15);  // + 15是为了杜绝负数！不要填-15以上的
+            //}
         }
 
         foreach (UIButton go in TempPanelObject.GetComponentsInChildren<UIButton>(true))

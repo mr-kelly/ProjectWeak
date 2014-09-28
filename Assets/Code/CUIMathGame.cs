@@ -17,6 +17,12 @@ public class CUIMathGame : CUIController
     public List<UIButton> SelectBtns;
     AudioSource TimeCounterSound;
     UILabel TimeCounterLabel;
+    UIEventListener PauseBtn;
+    
+    Transform WinPanel;
+    Transform PausePanel;
+
+    bool IsPause = false;
 
     public override void OnInit()
     {
@@ -32,6 +38,15 @@ public class CUIMathGame : CUIController
         SelectBtn1 = GetControl<UIButton>("SelectBtnsContainer/SelectBtn1");
         SelectBtn2 = GetControl<UIButton>("SelectBtnsContainer/SelectBtn2");
         SelectBtn3 = GetControl<UIButton>("SelectBtnsContainer/SelectBtn3");
+        
+        PauseBtn = GetControl<UIEventListener>("TopBar/Bg/PauseBtn");
+        PauseBtn.onClick = OnClickPauseBtn;
+
+        WinPanel = GetControl<Transform>("WinPanel");
+        WinPanel.gameObject.SetActive(false);
+
+        PausePanel = GetControl<Transform>("PausePanel");
+        PausePanel.gameObject.SetActive(false);
 
         SelectBtns = new List<UIButton>(){
             SelectBtn1, 
@@ -43,6 +58,12 @@ public class CUIMathGame : CUIController
         {
             btn.onClick.Add(new EventDelegate(OnClickSelectBtn));
         }
+    }
+
+    void OnClickPauseBtn(GameObject o)
+    {
+        IsPause = !IsPause;
+        WinPanel.gameObject.SetActive(IsPause);
     }
 
     public override void OnOpen(params object[] args)
@@ -70,8 +91,11 @@ public class CUIMathGame : CUIController
         float time = 0;
         while (true)
         {
-            time += Time.deltaTime;
-            TimeCounterLabel.text = string.Format("{0:F2}s", time);
+            if (!IsPause)
+            {
+                time += Time.deltaTime;
+                TimeCounterLabel.text = string.Format("{0:F2}s", time);
+            }
             yield return null;
         }
         
