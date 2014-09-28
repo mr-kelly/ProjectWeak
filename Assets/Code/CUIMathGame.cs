@@ -17,13 +17,11 @@ public class CUIMathGame : CUIController
     public List<UIButton> SelectBtns;
     AudioSource TimeCounterSound;
     UILabel TimeCounterLabel;
-    UIEventListener PauseBtn;
+    float GameTime = 0;
     
-    Transform WinPanel;
-    Transform PausePanel;
+    int Blood = 1; // 一滴血
 
-    bool IsPause = false;
-
+    int RightAnswerIndex = 0; // 正確答案按鈕的索引
     public override void OnInit()
     {
         base.OnInit();
@@ -38,15 +36,6 @@ public class CUIMathGame : CUIController
         SelectBtn1 = GetControl<UIButton>("SelectBtnsContainer/SelectBtn1");
         SelectBtn2 = GetControl<UIButton>("SelectBtnsContainer/SelectBtn2");
         SelectBtn3 = GetControl<UIButton>("SelectBtnsContainer/SelectBtn3");
-        
-        PauseBtn = GetControl<UIEventListener>("TopBar/Bg/PauseBtn");
-        PauseBtn.onClick = OnClickPauseBtn;
-
-        WinPanel = GetControl<Transform>("WinPanel");
-        WinPanel.gameObject.SetActive(false);
-
-        PausePanel = GetControl<Transform>("PausePanel");
-        PausePanel.gameObject.SetActive(false);
 
         SelectBtns = new List<UIButton>(){
             SelectBtn1, 
@@ -58,12 +47,6 @@ public class CUIMathGame : CUIController
         {
             btn.onClick.Add(new EventDelegate(OnClickSelectBtn));
         }
-    }
-
-    void OnClickPauseBtn(GameObject o)
-    {
-        IsPause = !IsPause;
-        WinPanel.gameObject.SetActive(IsPause);
     }
 
     public override void OnOpen(params object[] args)
@@ -88,14 +71,11 @@ public class CUIMathGame : CUIController
 
     IEnumerator TimerCounter()
     {
-        float time = 0;
+        GameTime = 0;
         while (true)
         {
-            if (!IsPause)
-            {
-                time += Time.deltaTime;
-                TimeCounterLabel.text = string.Format("{0:F2}s", time);
-            }
+            GameTime += Time.deltaTime;
+            TimeCounterLabel.text = string.Format("{0:F2}s", GameTime);
             yield return null;
         }
         
@@ -103,6 +83,7 @@ public class CUIMathGame : CUIController
 
     void NewLevel()
     {
+        Blood = 1;
         NewQuestion();
         ResetAllTweens();
         StartCoroutine(TimerCounter());
@@ -115,22 +96,55 @@ public class CUIMathGame : CUIController
         if (selectIndex == RightAnswerIndex)
         {
             CBase.Log("Right");
+            Blood--;
         }
         else
         {
             CBase.Log("Wrong");
             CNGUIBridge.Instance.UiCamera.gameObject.transform.DOShakePosition(.5f, 20f);
         }
-        AnswerQuestion();
+
+        if (Blood <= 0)
+        {
+            OnGameOver();
+        }
+        else
+        {
+            NewQuestion();  // 有血，繼續
+        }
+        
     }
 
-    void AnswerQuestion()
+    /// <summary>
+    /// 受傷，屏幕變紅
+    /// </summary>
+    void OnRightAnswer()
     {
-        NewQuestion();
+        // 數字+1 彈過去
+        CUIMidMsg.QuickMsg("Right!");
+        PlayScoreAnimate(1);
     }
 
-    int RightAnswerIndex = 0;
+    void PlayScoreAnimate(int number)
+    {
+        GameObject scoreEff = GameObject.Instantiate(ScoreEffectTemplate.gameObject) as GameObject;
+        scoreEff.transform.position = Vector3.zero;
+        UILabel copyLabel = scoreEff.GetComponent<UILabel>();
+        copyLabel.text = number.ToString();
 
+        scoreEff.transform.DOMove(ScoreLabel.transform.position, 1f);
+    }
+
+    /// <summary>
+    /// 答對題目，出現的效果
+    /// </summary>
+    void OnWrongAnswer()
+    {
+        // 生命條減少, 無數字
+        CUIMidMsg.QuickMsg("Wrong!");
+        PlayScoreAnimate(-1);
+    }
+    
     void NewQuestion()
     {
         int rightAnswer = GenerateQuestion();
@@ -201,22 +215,23 @@ public class CUIMathGame : CUIController
         }
     }
 
-    /// <summary>
-    /// 受傷，屏幕變紅
-    /// </summary>
-    void ScreenHurt()
+    /// 遊戲結束
+    /// 錯誤就結束 (有生命）
+    void OnGameOver()
     {
-        // 生命條減少, 無數字
-        CUIMidMsg.QuickMsg("Wrong!");
-    }
+        CBase.Log("Time: {0}", GameTime);
 
-    /// <summary>
-    /// 答對題目，出現的效果
-    /// </summary>
-    void ScreenRight()
-    {
-        // 數字+1 彈過去
-        CUIMidMsg.QuickMsg("Right!");
+        float highestTime = 0;
+        if (PlayerPrefs.HasKey("HighestTime"))
+            highestTime = PlayerPrefs.GetFloat("HighestTime");
+
+        PlayerPrefs.SetFloat("HighestTime", GameTime);
+
+        int highestRight = 0;
+        if (PlayerPrefs.HasKey("HighestRight"))
+            highestRight = PlayerPrefs.GetInt("HighestRight");
+
+        PlayerPrefs.SetInt("HighestRight", highestRight);
     }
 
     // TODO: no use
